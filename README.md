@@ -29,7 +29,7 @@ Point it at `https://mcp.aicut.pro/mcp` over Streamable HTTP. Clients that imple
 
 ## Tools
 
-48 tools. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
+50 tools. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
 `idempotentHint: false`, so a client asks before spending. Every `generate_*` tool takes
 `estimate_only: true` to price a request without creating anything - and on audio that is the only
 reliable quote, because audio models publish a per-character or per-second RATE rather than a price
@@ -65,16 +65,19 @@ land in that account's library.
 | `wait_for_generation` | The long poll: waits server-side and answers whether a job is terminal. |
 | `show_generation` | Replays an earlier generation the user asks to see again. |
 
-### Transforms - working from a clip you already have
+### Transforms - working from media you already have
 
-The source clip's length is measured on the server and IS the price, so a clip that cannot be
-measured is refused before anything is charged rather than charged and then failed.
+What the server measures IS the price: a clip's length, a picture's dimensions, an audio's length.
+Media the server cannot measure is refused before anything is charged rather than charged and then
+failed.
 
 | Tool | What it does |
 | --- | --- |
 | `upscale_video` | 2x or 4x an existing video. |
+| `upscale_image` | More pixels in an existing image, from three upscalers: a general-purpose one, one that goes to 10x and is priced per output megapixel, and a creative one that repaints detail as it enlarges. Priced from the picture's measured dimensions. |
 | `extend_video` | Continues an existing video by a chosen number of seconds. |
 | `motion_control` | A character picture plus a reference clip, and the character performs that clip's motion. The reference clip's length is the price. |
+| `generate_lipsync` | A character picture plus audio generated on this account, and the character speaks or sings it, lip-synced. The result is exactly as long as the audio, and the audio's measured length is the price. |
 
 ### Video analysis
 

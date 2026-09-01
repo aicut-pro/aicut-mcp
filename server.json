@@ -3,7 +3,7 @@
   "name": "pro.aicut/aicut",
   "title": "aicut",
   "description": "Generate AI videos, images, audio and staged AI Video Story episodes, and publish them to social.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "websiteUrl": "https://www.aicut.pro/mcp",
   "repository": {
     "url": "https://github.com/aicut-pro/aicut-mcp",
