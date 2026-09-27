@@ -29,7 +29,7 @@ Point it at `https://mcp.aicut.pro/mcp` over Streamable HTTP. Clients that imple
 
 ## Tools
 
-50 tools. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
+51 tools. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
 `idempotentHint: false`, so a client asks before spending. Every `generate_*` tool takes
 `estimate_only: true` to price a request without creating anything - and on audio that is the only
 reliable quote, because audio models publish a per-character or per-second RATE rather than a price
@@ -78,6 +78,7 @@ failed.
 | `extend_video` | Continues an existing video by a chosen number of seconds. |
 | `motion_control` | A character picture plus a reference clip, and the character performs that clip's motion. The reference clip's length is the price. |
 | `generate_lipsync` | A character picture plus audio generated on this account, and the character speaks or sings it, lip-synced. The result is exactly as long as the audio, and the audio's measured length is the price. |
+| `edit_video` | A 3-10 second clip plus a description of what to change, and the SAME clip comes back with those changes - different cast, clothes or setting - while the camera move, timing and motion stay exactly as they were. Real identifiable people in the source can be refused by the provider, and a refused job is refunded. |
 
 ### Video analysis
 
