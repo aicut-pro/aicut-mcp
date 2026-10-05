@@ -1,6 +1,6 @@
 # aicut MCP server
 
-Generate AI **story episodes, videos, images and audio** straight from Claude, Claude Code, or any MCP client - no API key, no dashboard round-trip.
+Generate AI **story episodes, videos, images and audio** straight from Claude, Claude Code, ChatGPT, Cursor, Grok or any MCP client - no API key, no dashboard round-trip.
 
 - **Server URL:** `https://mcp.aicut.pro/mcp`
 - **Transport:** Streamable HTTP
@@ -23,13 +23,27 @@ Then run `/mcp`, pick `aicut`, choose **Authenticate**, and approve in the brows
 
 Settings -> Customize -> Connectors -> **Add** -> **Add custom connector**, name it `aicut`, paste `https://mcp.aicut.pro/mcp`, hit **Connect** and approve.
 
+### ChatGPT
+
+Settings -> Security and login -> Advanced security -> switch on **Developer mode**. Then open **Plugins** in the sidebar, hit **+**, name it `aicut`, paste `https://mcp.aicut.pro/mcp`, leave Authentication on OAuth, tick the box and **Create**. Choose **Sign in with aicut** and approve.
+
+### Cursor
+
+Customize -> MCPs -> **New MCP Server**, name it `aicut`, paste `https://mcp.aicut.pro/mcp`. Cursor lists it under Needs attention: hit **Authenticate** and approve. (Or use the one-click **Add to Cursor** button on https://www.aicut.pro/mcp.)
+
+### Grok
+
+[grok.com/connectors](https://grok.com/connectors) -> **New Connector** -> **Custom**, name it `aicut`, paste `https://mcp.aicut.pro/mcp`. The aicut sign-in opens: approve it. Custom connectors come with Grok's Business and Enterprise plans.
+
 ### Any other MCP client
 
 Point it at `https://mcp.aicut.pro/mcp` over Streamable HTTP. Clients that implement the MCP OAuth flow register themselves; clients with no browser can use an aicut API key as a bearer token instead (keys are issued by hand - email support@aicut.pro).
 
 ## Tools
 
-51 tools. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
+54 tools, plus nine MCP prompts (step-by-step recipes; `get_recipe` serves the same text to
+clients that do not show prompts). Any argument a tool does not declare is refused with an error
+that names it, rather than silently dropped. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
 `idempotentHint: false`, so a client asks before spending. Every `generate_*` tool takes
 `estimate_only: true` to price a request without creating anything - and on audio that is the only
 reliable quote, because audio models publish a per-character or per-second RATE rather than a price
@@ -42,10 +56,11 @@ land in that account's library.
 | --- | --- |
 | `list_models` | The curated video, image and audio catalog with the exact cost of every settings combination. Call this first - model ids and their accepted values cannot be guessed. Searchable and paged. |
 | `get_balance` | Tokens left on the account, and its plan tier. |
-| `list_voices` | The whole voice catalogue - ElevenLabs (stock, plus this account's cloned and custom voices), OpenAI and Amazon Polly in one shape, each with a verdict on what it can be used for. Paged. |
+| `list_voices` | The whole voice catalogue - ElevenLabs (stock, plus this account's cloned and custom voices) and OpenAI in one shape, each with a verdict on what it can be used for. Paged. |
 | `list_characters` | The account's uploaded characters and generated story cast members, in one list. |
 | `list_series` | The AI Video Story catalog: which series (niches) an episode can be made in, with their episode-length ladder, model defaults and prices. |
 | `list_series_ideas` | One series' curated episode ideas. |
+| `get_recipe` | A step-by-step recipe for a flow, read before its first call: a first video, image or audio, an AI Video Story episode, a fake-text or image story script, a niche run, a talking avatar, motion control. |
 | `browse_series` | Puts the series catalog on screen as a grid of covers whose demo clips play in place, on clients that render cards. Tapping selects, one Confirm writes the pick. |
 
 ### Video, image and audio
@@ -103,18 +118,20 @@ charged and PARK for review; firing buys the scene videos; rendering buys the fi
 | `generate_story_video` | Stage 1: writes the episode, generates the start frames, and parks for review. `estimate_only` quotes the whole episode with its stage split. |
 | `regenerate_story_frame` | Redraws one parked start frame. |
 | `change_story_scene` | Changes what happens in one parked scene, then redraws its frame. |
-| `set_scene_kept` | FREE. Removes a parked scene, so its video is never generated and never charged. |
+| `remove_story_scene` | FREE. Removes a parked scene, so its video is never generated and never charged. Replaces `set_scene_kept`, which still answers as an alias. |
 | `fire_story_video` | Stage 2: generates the scene videos for the scenes you kept. Irreversible, and an episode cannot fire twice. |
 | `render_story_video` | Stage 3: the final render. Free-tier renders carry a watermark. |
 
 ### One-call formats
 
-These two write and render in a single call: no fire step, no render step.
+These write and render in a single call: no fire step, no render step.
 
 | Tool | What it does |
 | --- | --- |
 | `generate_fake_text_video` | The fake-text chat-story format. The agent writes the message script; the server speaks it, measures the bubbles and renders it. The voice provider moves the price, so re-quote after changing it. |
 | `generate_image_story` | The AI image story format. The agent writes the narration; the server segments it, writes the image prompts, generates every scene image, speaks it and renders it. Price is driven by the image count. |
+| `list_niches` | aicut's one-shot trending formats ("niches"): each made from a few answers, and sometimes a picture, at one price. Without a slug, the cards; with one, that niche in full. |
+| `generate_from_niche` | Runs one niche on the account and returns the job id at once; the video is collected with `wait_for_generation`. |
 | `list_image_story_styles` | aicut's authored image-story looks. Optional on a create, and picking one forces the pricier edit-capable image model - re-quote after adding one. |
 
 ### Publishing to social
