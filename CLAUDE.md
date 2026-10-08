@@ -8,6 +8,6 @@ and `.github/CODEOWNERS` are owned here.
 
 A PR that edits any of the three generated files HERE is wrong - the next sync overwrites it. Open it
 on the backend instead, where `services/api/mcp-server/src/rosterDrift.test.ts` pins the README's
-tool table and counts to the server's public roster, pins `server.json` to the server's constants
-and scans every published file for a team-preview tool name. Publishing `server.json` to the MCP
-registry (`mcp-publisher`) stays a manual step.
+tool table, counts and server URLs to the server's own roster and constants, and `server.json`'s
+fields to the same. Publishing `server.json` to the MCP registry (`mcp-publisher`) stays a manual
+step.
