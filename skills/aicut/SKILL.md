@@ -1,8 +1,9 @@
 ---
 name: aicut
 description: Make AI videos, images, voiceovers, music and full AI Video Story episodes, and post them to TikTok, YouTube and Instagram, through aicut's hosted MCP server. Use when the user asks for a short-form video, an AI clip on a named model (Veo, Kling, Seedance, Wan, LTX, Grok Imagine), an image, a voiceover, a faceless TikTok channel, a story episode, or to publish a finished video to social.
-version: 1.0.0
+license: MIT
 metadata:
+  version: "1.0.0"
   openclaw:
     emoji: "🎬"
     homepage: https://www.aicut.pro/mcp
