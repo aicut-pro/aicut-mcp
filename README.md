@@ -44,7 +44,7 @@ Point it at `https://mcp.aicut.pro/mcp` over Streamable HTTP. Clients that imple
 
 ## Tools
 
-54 tools, plus 9 MCP prompts (step-by-step recipes; `get_recipe` serves the same text to
+61 tools, plus 12 MCP prompts (step-by-step recipes; `get_recipe` serves the same text to
 clients that do not show prompts). Any argument a tool does not declare is refused with an error
 that names it, rather than silently dropped. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
 `idempotentHint: false`, so a client asks before spending. Every `generate_*` tool takes
@@ -94,6 +94,8 @@ failed.
 | `upscale_video` | 2x or 4x an existing video. |
 | `upscale_image` | More pixels in an existing image, from three upscalers: a general-purpose one, one that goes to 10x and is priced per output megapixel, and a creative one that repaints detail as it enlarges. Priced from the picture's measured dimensions. |
 | `extend_video` | Continues an existing video by a chosen number of seconds. |
+| `reshot_video` | A 4-30 second clip plus reference pictures, remade either as an object swap (one subject or object replaced, everything else kept) or as a motion transfer (the reference subject performs the clip's moves). Needs the likeness consent accepted once in the aicut web app before the first use. Not offered on ChatGPT. |
+| `list_reshot_templates` | The Reshot gallery: ready-made clips, each with a preview of its remake, any of which `reshot_video` takes as a template. Not offered on ChatGPT. |
 | `motion_control` | A character picture plus a reference clip, and the character performs that clip's motion. The reference clip's length is the price. |
 | `generate_lipsync` | A character picture plus audio generated on this account, and the character speaks or sings it, lip-synced. The result is exactly as long as the audio, and the audio's measured length is the price. |
 | `edit_video` | A 3-10 second clip plus a description of what to change, and the SAME clip comes back with those changes - different cast, clothes or setting - while the camera move, timing and motion stay exactly as they were. Real identifiable people in the source can be refused by the provider, and a refused job is refunded. |
@@ -105,6 +107,7 @@ failed.
 | `analyze_video` | Reads an existing video instead of making one. Spends no tokens; capped per account per day. |
 | `get_analysis` | One analysis by id. |
 | `list_analyses` | Recent analyses, paginated. |
+| `image_to_prompt` | Writes a prompt that regenerates a similar image, from an image url. Spends no tokens; capped per account per day. |
 
 ### AI Video Story - the staged episode flow
 
@@ -141,6 +144,7 @@ These write and render in a single call: no fire step, no render step.
 
 | Tool | What it does |
 | --- | --- |
+| `import_video` | Free. Brings a clip not made on aicut - the user's own upload or a public link to an MP4 or MOV - onto the account as a finished video, so it can be posted. |
 | `list_social_accounts` | The TikTok, YouTube and Instagram accounts this user has connected. An empty list means they must connect one in a browser - this API cannot. |
 | `prepare_post` | Stages a post of one of the account's finished videos, named by aicut id. Publishes nothing, and expires after 30 minutes. |
 | `review_post` | The consent card: shows the actual video, the destination account and the caption, visibility and disclosure controls, and re-stages the person's own choices. Publishes nothing. |
@@ -160,6 +164,9 @@ These write and render in a single call: no fire step, no render step.
 | --- | --- |
 | `upload_media_widget` | The in-card file picker. The person chooses a file, the card uploads and confirms it, and posts the finished url back. The agent's whole job is to call this and wait. |
 | `upload_media` | A signed upload target for a file on the user's own machine, plus the curl that fills it. |
+| `list_uploads` | Free. The account's recent uploads, last used first, each with its url and kind. |
+| `show_uploads` | Free. The same list opened as a numbered grid of thumbnails the person picks from in the chat. |
+| `import_link` | Free. A TikTok link becomes a 3-30 second clip on the account, usable as any video input. |
 | `confirm_upload` | The second half: re-reads the uploaded object, checks its magic bytes against the declared type and measures a video, refusing anything that fails. |
 
 ## Docs and policies
