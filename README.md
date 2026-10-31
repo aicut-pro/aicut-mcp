@@ -44,7 +44,7 @@ Point it at `https://mcp.aicut.pro/mcp` over Streamable HTTP. Clients that imple
 
 ## Tools
 
-61 tools, plus 12 MCP prompts (step-by-step recipes; `get_recipe` serves the same text to
+62 tools, plus 12 MCP prompts (step-by-step recipes; `get_recipe` serves the same text to
 clients that do not show prompts). Any argument a tool does not declare is refused with an error
 that names it, rather than silently dropped. Read tools are annotated `readOnlyHint`; the tools that spend carry `destructiveHint` and
 `idempotentHint: false`, so a client asks before spending. Every `generate_*` tool takes
@@ -55,33 +55,33 @@ land in that account's library.
 
 ### Catalog and account
 
-| Tool | What it does |
-| --- | --- |
-| `list_models` | The curated video, image and audio catalog with the exact cost of every settings combination. Call this first - model ids and their accepted values cannot be guessed. Searchable and paged. |
-| `get_balance` | Tokens left on the account, and its plan tier. |
-| `list_voices` | The whole voice catalogue - ElevenLabs (stock, plus this account's cloned and custom voices) and OpenAI in one shape, each with a verdict on what it can be used for. Paged. |
-| `list_characters` | The account's uploaded characters and generated story cast members, in one list. |
-| `list_series` | The AI Video Story catalog: which series (niches) an episode can be made in, with their episode-length ladder, model defaults and prices. |
-| `list_series_ideas` | One series' curated episode ideas. |
-| `get_recipe` | A step-by-step recipe for a flow, read before its first call: a first video, image or audio, an AI Video Story episode, a fake-text or image story script, a niche run, a talking avatar, motion control. |
-| `browse_series` | Puts the series catalog on screen as a grid of covers whose demo clips play in place, on clients that render cards. Tapping selects, one Confirm writes the pick. |
+| Tool                | What it does                                                                                                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `list_models`       | The curated video, image and audio catalog with the exact cost of every settings combination. Call this first - model ids and their accepted values cannot be guessed. Searchable and paged.              |
+| `get_balance`       | Tokens left on the account, and its plan tier.                                                                                                                                                            |
+| `list_voices`       | The whole voice catalogue - ElevenLabs (stock, plus this account's cloned and custom voices) and OpenAI in one shape, each with a verdict on what it can be used for. Paged.                              |
+| `list_characters`   | The account's uploaded characters and generated story cast members, in one list.                                                                                                                          |
+| `list_series`       | The AI Video Story catalog: which series (niches) an episode can be made in, with their episode-length ladder, model defaults and prices.                                                                 |
+| `list_series_ideas` | One series' curated episode ideas.                                                                                                                                                                        |
+| `get_recipe`        | A step-by-step recipe for a flow, read before its first call: a first video, image or audio, an AI Video Story episode, a fake-text or image story script, a niche run, a talking avatar, motion control. |
+| `browse_series`     | Puts the series catalog on screen as a grid of covers whose demo clips play in place, on clients that render cards. Tapping selects, one Confirm writes the pick.                                         |
 
 ### Video, image and audio
 
-| Tool | What it does |
-| --- | --- |
-| `generate_video` | Starts a video generation. Asynchronous: returns a job id. |
-| `get_video` | One video by id, with its status and finished url. |
-| `list_videos` | The account's recent videos, paginated. |
-| `delete_video` | Deletes one of the caller's own videos. No refund. |
-| `generate_image` | Generates an image, and usually returns it finished in the same call. |
-| `get_image` | One image by id. |
-| `list_images` | Recent images, paginated. |
-| `generate_audio` | Speech, music or a sound effect, chosen by `model`. |
-| `get_audio` | One audio job by id. |
-| `list_audio` | Recent audio, paginated. |
+| Tool                  | What it does                                                            |
+| --------------------- | ----------------------------------------------------------------------- |
+| `generate_video`      | Starts a video generation. Asynchronous: returns a job id.              |
+| `get_video`           | One video by id, with its status and finished url.                      |
+| `list_videos`         | The account's recent videos, paginated.                                 |
+| `delete_video`        | Deletes one of the caller's own videos. No refund.                      |
+| `generate_image`      | Generates an image, and usually returns it finished in the same call.   |
+| `get_image`           | One image by id.                                                        |
+| `list_images`         | Recent images, paginated.                                               |
+| `generate_audio`      | Speech, music or a sound effect, chosen by `model`.                     |
+| `get_audio`           | One audio job by id.                                                    |
+| `list_audio`          | Recent audio, paginated.                                                |
 | `wait_for_generation` | The long poll: waits server-side and answers whether a job is terminal. |
-| `show_generation` | Replays an earlier generation the user asks to see again. |
+| `show_generation`     | Replays an earlier generation the user asks to see again.               |
 
 ### Transforms - working from media you already have
 
@@ -89,24 +89,24 @@ What the server measures IS the price: a clip's length, a picture's dimensions, 
 Media the server cannot measure is refused before anything is charged rather than charged and then
 failed.
 
-| Tool | What it does |
-| --- | --- |
-| `upscale_video` | 2x or 4x an existing video. |
-| `upscale_image` | More pixels in an existing image, from three upscalers: a general-purpose one, one that goes to 10x and is priced per output megapixel, and a creative one that repaints detail as it enlarges. Priced from the picture's measured dimensions. |
-| `extend_video` | Continues an existing video by a chosen number of seconds. |
-| `reshot_video` | A 4-30 second clip plus reference pictures, remade either as an object swap (one subject or object replaced, everything else kept) or as a motion transfer (the reference subject performs the clip's moves). Needs the likeness consent accepted once in the aicut web app before the first use. Not offered on ChatGPT. |
-| `list_reshot_templates` | The Reshot gallery: ready-made clips, each with a preview of its remake, any of which `reshot_video` takes as a template. Not offered on ChatGPT. |
-| `motion_control` | A character picture plus a reference clip, and the character performs that clip's motion. The reference clip's length is the price. |
-| `generate_lipsync` | A character picture plus audio generated on this account, and the character speaks or sings it, lip-synced. The result is exactly as long as the audio, and the audio's measured length is the price. |
-| `edit_video` | A 3-10 second clip plus a description of what to change, and the SAME clip comes back with those changes - different cast, clothes or setting - while the camera move, timing and motion stay exactly as they were. Real identifiable people in the source can be refused by the provider, and a refused job is refunded. |
+| Tool                    | What it does                                                                                                                                                                                                                                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `upscale_video`         | 2x or 4x an existing video.                                                                                                                                                                                                                                                                                               |
+| `upscale_image`         | More pixels in an existing image, from three upscalers: a general-purpose one, one that goes to 10x and is priced per output megapixel, and a creative one that repaints detail as it enlarges. Priced from the picture's measured dimensions.                                                                            |
+| `extend_video`          | Continues an existing video by a chosen number of seconds.                                                                                                                                                                                                                                                                |
+| `reshot_video`          | A 4-30 second clip plus reference pictures, remade either as an object swap (one subject or object replaced, everything else kept) or as a motion transfer (the reference subject performs the clip's moves). Needs the likeness consent accepted once in the aicut web app before the first use. Not offered on ChatGPT. |
+| `list_reshot_templates` | The Reshot gallery: ready-made clips, each with a preview of its remake, any of which `reshot_video` takes as a template. Not offered on ChatGPT.                                                                                                                                                                         |
+| `motion_control`        | A character picture plus a reference clip, and the character performs that clip's motion. The reference clip's length is the price.                                                                                                                                                                                       |
+| `generate_lipsync`      | A character picture plus audio generated on this account, and the character speaks or sings it, lip-synced. The result is exactly as long as the audio, and the audio's measured length is the price.                                                                                                                     |
+| `edit_video`            | A 3-10 second clip plus a description of what to change, and the SAME clip comes back with those changes - different cast, clothes or setting - while the camera move, timing and motion stay exactly as they were. Real identifiable people in the source can be refused by the provider, and a refused job is refunded. |
 
 ### Video analysis
 
-| Tool | What it does |
-| --- | --- |
-| `analyze_video` | Reads an existing video instead of making one. Spends no tokens; capped per account per day. |
-| `get_analysis` | One analysis by id. |
-| `list_analyses` | Recent analyses, paginated. |
+| Tool              | What it does                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `analyze_video`   | Reads an existing video instead of making one. Spends no tokens; capped per account per day.                       |
+| `get_analysis`    | One analysis by id.                                                                                                |
+| `list_analyses`   | Recent analyses, paginated.                                                                                        |
 | `image_to_prompt` | Writes a prompt that regenerates a similar image, from an image url. Spends no tokens; capped per account per day. |
 
 ### AI Video Story - the staged episode flow
@@ -115,59 +115,60 @@ An episode is made in stages, and each stage has its own price, so nothing large
 blind step: the cast is written free and its portraits are bought; the episode's start frames are
 charged and PARK for review; firing buys the scene videos; rendering buys the final file.
 
-| Tool | What it does |
-| --- | --- |
-| `generate_cast` | FREE. Writes a story cast for a series and returns it to read. Mints nothing. |
-| `generate_cast_portraits` | Buys one image per cast member and saves the roster to the library. |
-| `regenerate_cast_portrait` | Redraws one cast member's face. |
-| `describe_cast_member` | Changes what one cast member is, then redraws them. |
-| `generate_story_video` | Stage 1: writes the episode, generates the start frames, and parks for review. `estimate_only` quotes the whole episode with its stage split. |
-| `regenerate_story_frame` | Redraws one parked start frame. |
-| `change_story_scene` | Changes what happens in one parked scene, then redraws its frame. |
-| `remove_story_scene` | FREE. Removes a parked scene, so its video is never generated and never charged. Replaces `set_scene_kept`, which still answers as an alias. |
-| `fire_story_video` | Stage 2: generates the scene videos for the scenes you kept. Irreversible, and an episode cannot fire twice. |
-| `render_story_video` | Stage 3: the final render. Free-tier renders carry a watermark. |
+| Tool                       | What it does                                                                                                                                  |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate_cast`            | FREE. Writes a story cast for a series and returns it to read. Mints nothing.                                                                 |
+| `generate_cast_portraits`  | Buys one image per cast member and saves the roster to the library.                                                                           |
+| `regenerate_cast_portrait` | Redraws one cast member's face.                                                                                                               |
+| `describe_cast_member`     | Changes what one cast member is, then redraws them.                                                                                           |
+| `generate_story_video`     | Stage 1: writes the episode, generates the start frames, and parks for review. `estimate_only` quotes the whole episode with its stage split. |
+| `regenerate_story_frame`   | Redraws one parked start frame.                                                                                                               |
+| `change_story_scene`       | Changes what happens in one parked scene, then redraws its frame.                                                                             |
+| `remove_story_scene`       | FREE. Removes a parked scene, so its video is never generated and never charged. Replaces `set_scene_kept`, which still answers as an alias.  |
+| `fire_story_video`         | Stage 2: generates the scene videos for the scenes you kept. Irreversible, and an episode cannot fire twice.                                  |
+| `render_story_video`       | Stage 3: the final render. Free-tier renders carry a watermark.                                                                               |
 
 ### One-call formats
 
 These write and render in a single call: no fire step, no render step.
 
-| Tool | What it does |
-| --- | --- |
-| `generate_fake_text_video` | The fake-text chat-story format. The agent writes the message script; the server speaks it, measures the bubbles and renders it. The voice provider moves the price, so re-quote after changing it. |
-| `generate_image_story` | The AI image story format. The agent writes the narration; the server segments it, writes the image prompts, generates every scene image, speaks it and renders it. Price is driven by the image count. |
-| `list_niches` | aicut's one-shot trending formats ("niches"): each made from a few answers, and sometimes a picture, at one price. Without a slug, the cards; with one, that niche in full. |
-| `generate_from_niche` | Runs one niche on the account and returns the job id at once; the video is collected with `wait_for_generation`. |
-| `list_image_story_styles` | aicut's authored image-story looks. Optional on a create, and picking one forces the pricier edit-capable image model - re-quote after adding one. |
+| Tool                       | What it does                                                                                                                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate_fake_text_video` | The fake-text chat-story format. The agent writes the message script; the server speaks it, measures the bubbles and renders it. The voice provider moves the price, so re-quote after changing it.     |
+| `generate_image_story`     | The AI image story format. The agent writes the narration; the server segments it, writes the image prompts, generates every scene image, speaks it and renders it. Price is driven by the image count. |
+| `list_niches`              | aicut's one-shot trending formats ("niches"): each made from a few answers, and sometimes a picture, at one price. Without a slug, the cards; with one, that niche in full.                             |
+| `generate_from_niche`      | Runs one niche on the account and returns the job id at once; the video is collected with `wait_for_generation`.                                                                                        |
+| `list_image_story_styles`  | aicut's authored image-story looks. Optional on a create, and picking one forces the pricier edit-capable image model - re-quote after adding one.                                                      |
 
 ### Publishing to social
 
-| Tool | What it does |
-| --- | --- |
-| `import_video` | Free. Brings a clip not made on aicut - the user's own upload or a public link to an MP4 or MOV - onto the account as a finished video, so it can be posted. |
-| `list_social_accounts` | The TikTok, YouTube and Instagram accounts this user has connected. An empty list means they must connect one in a browser - this API cannot. |
-| `prepare_post` | Stages a post of one of the account's finished videos, named by aicut id. Publishes nothing, and expires after 30 minutes. |
-| `review_post` | The consent card: shows the actual video, the destination account and the caption, visibility and disclosure controls, and re-stages the person's own choices. Publishes nothing. |
-| `publish_post` | IRREVERSIBLE: sends or schedules the prepared post. States the per-account rate ceiling rather than making an agent discover it. |
-| `get_post_status` | What the platform says happened, from `prepared` through to `posted` or `failed`. |
+| Tool                   | What it does                                                                                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import_video`         | Free. Brings a clip not made on aicut - the user's own upload or a public link to an MP4 or MOV - onto the account as a finished video, so it can be posted.                      |
+| `list_social_accounts` | The TikTok, YouTube and Instagram accounts this user has connected. An empty list means they must connect one in a browser - this API cannot.                                     |
+| `prepare_post`         | Stages a post of one of the account's finished videos, named by aicut id. Publishes nothing, and expires after 30 minutes.                                                        |
+| `review_post`          | The consent card: shows the actual video, the destination account and the caption, visibility and disclosure controls, and re-stages the person's own choices. Publishes nothing. |
+| `publish_post`         | IRREVERSIBLE: sends or schedules the prepared post. States the per-account rate ceiling rather than making an agent discover it.                                                  |
+| `get_post_status`      | What the platform says happened, from `prepared` through to `posted` or `failed`.                                                                                                 |
 
 ### Trends
 
-| Tool | What it does |
-| --- | --- |
-| `list_trends` | aicut's published trend feed. Read-only. |
+| Tool                 | What it does                                                                                        |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| `list_trends`        | aicut's published trend feed. Read-only.                                                            |
 | `get_recreate_brief` | How to recreate one trending video. Names the niche it can prove, and deliberately names no series. |
 
 ### Uploads - using your own footage and images
 
-| Tool | What it does |
-| --- | --- |
+| Tool                  | What it does                                                                                                                                                           |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `upload_media_widget` | The in-card file picker. The person chooses a file, the card uploads and confirms it, and posts the finished url back. The agent's whole job is to call this and wait. |
-| `upload_media` | A signed upload target for a file on the user's own machine, plus the curl that fills it. |
-| `list_uploads` | Free. The account's recent uploads, last used first, each with its url and kind. |
-| `show_uploads` | Free. The same list opened as a numbered grid of thumbnails the person picks from in the chat. |
-| `import_link` | Free. A TikTok link becomes a 3-30 second clip on the account, usable as any video input. |
-| `confirm_upload` | The second half: re-reads the uploaded object, checks its magic bytes against the declared type and measures a video, refusing anything that fails. |
+| `upload_media`        | A signed upload target for a file on the user's own machine, plus the curl that fills it.                                                                              |
+| `list_uploads`        | Free. The account's recent uploads, last used first, each with its url and kind.                                                                                       |
+| `show_uploads`        | Free. The same list opened as a numbered grid of thumbnails the person picks from in the chat.                                                                         |
+| `show_images`         | Free. The account's generated images as a numbered grid, with Show more for older ones; the person picks one in the card or by number in the chat.                     |
+| `import_link`         | Free. A TikTok link becomes a 3-30 second clip on the account, usable as any video input.                                                                              |
+| `confirm_upload`      | The second half: re-reads the uploaded object, checks its magic bytes against the declared type and measures a video, refusing anything that fails.                    |
 
 ## Docs and policies
 
