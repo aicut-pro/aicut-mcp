@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "pro.aicut/aicut",
   "title": "aicut",
-  "description": "Generate AI videos, images, audio and staged AI Video Story episodes, and publish them to social.",
-  "version": "1.16.0",
+  "description": "Generate AI videos, images and audio, AI Video Story episodes and short dramas; publish to social.",
+  "version": "1.22.0",
   "websiteUrl": "https://www.aicut.pro/mcp",
   "repository": {
     "url": "https://github.com/aicut-pro/aicut-mcp",
